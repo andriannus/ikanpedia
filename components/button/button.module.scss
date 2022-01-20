@@ -1,0 +1,206 @@
+.Button {
+  @apply bg-white border border-gray-300 flex font-bold items-center;
+  @apply justify-center outline-none px-bs py-sm rounded-xs select-none;
+  @apply text-center text-gray-700 transition duration-300;
+
+  -webkit-tap-highlight-color: transparent;
+
+  &:active,
+  &:hover,
+  &:focus {
+    @apply border-ruby-500 text-ruby-500;
+  }
+
+  &:active,
+  &:focus {
+    @apply ring ring-red-200;
+  }
+
+  &:focus {
+    @apply bg-ruby-100;
+  }
+
+  &-icon {
+    @apply mr-bs;
+  }
+
+  &--fullWidth {
+    width: 100%;
+  }
+
+  &--hasIcon {
+    @apply font-normal justify-start p-xs text-sm;
+  }
+
+  &--loading {
+    @apply cursor-wait;
+
+    &:active,
+    &:focus {
+      @apply ring-0;
+    }
+  }
+
+  &--rounded {
+    @apply rounded-full;
+  }
+
+  &--small {
+    @apply px-xs;
+
+    line-height: 19px;
+    padding-bottom: 6.5px;
+    padding-top: 6.5px;
+  }
+
+  &--icon {
+    height: 27px;
+    padding: 6.5px;
+    width: 27px;
+
+    ::v-deep svg {
+      height: auto;
+      width: auto;
+    }
+  }
+
+  &.Button--primary {
+    @apply bg-ruby-500 border-0 text-white;
+
+    &:hover {
+      @apply bg-ruby-400 border-ruby-400 text-white;
+    }
+
+    &:focus {
+      @apply bg-ruby-600 border-ruby-600;
+    }
+
+    &.Button--loading {
+      &:focus,
+      &:hover {
+        @apply bg-ruby-500 border-0 text-white;
+      }
+    }
+
+    &.Button--outlined {
+      @apply bg-white border border-ruby-500 text-ruby-500;
+
+      &:hover {
+        @apply bg-ruby-500 text-white;
+      }
+    }
+  }
+
+  &.Button--success {
+    @apply bg-green-500 border-green-500 text-white;
+
+    &:active,
+    &:focus {
+      @apply ring ring-green-200;
+    }
+
+    &:hover {
+      @apply bg-green-400 border-green-400 text-white;
+    }
+
+    &:focus {
+      @apply bg-green-600 border-green-600;
+    }
+
+    &.Button--loading {
+      &:focus,
+      &:hover {
+        @apply bg-green-500 border-green-500 text-white;
+      }
+    }
+
+    &.Button--outlined {
+      @apply bg-white border border-green-500 text-green-500;
+
+      &:hover {
+        @apply bg-green-500 text-white;
+      }
+    }
+  }
+
+  &:disabled {
+    &.Button--primary,
+    &.Button--success,
+    &.Button--outlined,
+    &.Button--primary.Button--outlined,
+    &.Button--success.Button--outlined {
+      &:hover {
+        @apply bg-gray-300 border-gray-300 text-white cursor-not-allowed;
+      }
+
+      &:active,
+      &:focus {
+        @apply ring-0;
+      }
+
+      @apply bg-gray-300 border-gray-300 text-white cursor-not-allowed;
+    }
+  }
+}
+
+.Loading {
+  display: inline-block;
+  height: 24px;
+  position: relative;
+  width: 64px;
+
+  div {
+    animation-timing-function: cubic-bezier(0, 1, 1, 0);
+    background: #fff;
+    border-radius: 50%;
+    height: 14px;
+    position: absolute;
+    top: 5px;
+    width: 14px;
+  }
+}
+
+.Loading div:nth-child(1) {
+  animation: Loading-animationFirst 0.6s infinite;
+}
+
+.Loading div:nth-child(2) {
+  animation: Loading-animationSecond 0.6s infinite;
+}
+
+.Loading div:nth-child(3) {
+  animation: Loading-animationSecond 0.6s infinite;
+  left: 24px;
+}
+
+.Loading div:nth-child(4) {
+  animation: Loading-animationThird 0.6s infinite;
+  left: 48px;
+}
+
+@keyframes Loading-animationFirst {
+  0% {
+    transform: scale(0);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes Loading-animationSecond {
+  0% {
+    transform: translate(0, 0);
+  }
+  100% {
+    transform: translate(24px, 0);
+  }
+}
+
+@keyframes Loading-animationThird {
+  0% {
+    transform: scale(1);
+  }
+  100% {
+    transform: scale(0);
+  }
+}
