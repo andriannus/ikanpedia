@@ -1,0 +1,43 @@
+.Chip {
+  @apply border border-gray-300 inline-flex items-center px-sm rounded-full;
+  @apply select-none text-sm leading-5 whitespace-nowrap;
+
+  color: #4f4f4f;
+  padding-bottom: 6px;
+  padding-top: 6px;
+
+  &--button {
+    &:hover {
+      @apply cursor-pointer;
+
+      -webkit-tap-highlight-color: transparent;
+    }
+  }
+
+  &--small {
+    @apply leading-4 py-2xs text-xs;
+  }
+
+  &.Chip--small {
+    &.is-active::before {
+      height: 12px;
+    }
+  }
+
+  &.is-active {
+    @apply border-ruby-500 pl-2;
+
+    background-color: rgba(250, 64, 50, 0.1);
+    color: theme("colors.ruby.500");
+
+    &::before {
+      @apply bg-cover;
+
+      background-image: url("/check.png");
+      content: "";
+      height: 10px;
+      margin-right: 4px;
+      width: 12px;
+    }
+  }
+}
