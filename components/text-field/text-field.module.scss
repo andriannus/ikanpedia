@@ -1,0 +1,17 @@
+.TextField {
+  &-input {
+    @apply appearance-none border rounded-xs px-xs py-sm text-base leading-5;
+    @apply text-gray-900 transition duration-200 w-full;
+
+    border-color: #e0e0e0;
+
+    &:focus {
+      @apply border-red-400 outline-none ring ring-red-200;
+    }
+
+    &:disabled,
+    &::placeholder {
+      @apply text-gray-400;
+    }
+  }
+}
