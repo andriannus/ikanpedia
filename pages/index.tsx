@@ -58,9 +58,10 @@ const Home: NextPage = () => {
         <div className="mb-bs">
           <p className="mb-sm text-sm leading-5">Ukuran</p>
 
-          {["25", "50", "200", "100"].map((size) => {
+          {["25", "50", "200", "100"].map((size, index) => {
             return (
               <Chip
+                key={`size-${index}`}
                 active={filter.size === size}
                 button
                 className="mr-xs"
@@ -76,9 +77,10 @@ const Home: NextPage = () => {
           <p className="mb-sm text-sm leading-5">Provinsi</p>
 
           {["Jawa Barat", "Sumatera Utara", "Lampung", "Bali"].map(
-            (province) => {
+            (province, index) => {
               return (
                 <Chip
+                  key={`province-${index}`}
                   active={filter.province === province}
                   button
                   className="mr-xs"
@@ -94,18 +96,21 @@ const Home: NextPage = () => {
         <div>
           <p className="mb-sm text-sm leading-5">Kota</p>
 
-          {["Bogor", "Jakarta Selatan", "Medan", "Denpasar"].map((city) => {
-            return (
-              <Chip
-                active={filter.city === city}
-                button
-                className="mr-xs"
-                onClick={() => selectCity(city)}
-              >
-                {city}
-              </Chip>
-            );
-          })}
+          {["Bogor", "Jakarta Selatan", "Medan", "Denpasar"].map(
+            (city, index) => {
+              return (
+                <Chip
+                  key={`city-${index}`}
+                  active={filter.city === city}
+                  button
+                  className="mr-xs"
+                  onClick={() => selectCity(city)}
+                >
+                  {city}
+                </Chip>
+              );
+            },
+          )}
         </div>
       </Box>
 
