@@ -1,0 +1,42 @@
+.Home {
+  @apply bg-white;
+}
+
+.List {
+  @apply border border-gray-300 rounded-2xs select-none;
+
+  &-item {
+    @apply flex justify-between outline-none px-bs py-sm transition duration-300;
+
+    -webkit-tap-highlight-color: transparent;
+
+    &:not(:last-child) {
+      @apply border-b border-gray-300;
+    }
+
+    &:active,
+    &:focus {
+      @apply bg-ruby-100;
+    }
+
+    &:hover {
+      @apply cursor-pointer;
+    }
+
+    &Action {
+      @apply flex items-center;
+    }
+
+    &Content {
+      @apply mr-md w-full;
+    }
+
+    &Subtitle {
+      @apply text-sm leading-5;
+    }
+
+    &Title {
+      @apply font-semibold leading-4 mb-2xs text-gray-900 text-xs;
+    }
+  }
+}
