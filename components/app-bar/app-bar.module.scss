@@ -1,9 +1,19 @@
 .AppBar {
-  @apply flex items-center;
+  @apply bg-white flex items-center justify-between mb-md p-bs w-full;
 
-  height: 80px;
+  height: 56px;
+
+  > {
+    :not(:last-child) {
+      @apply mr-xs;
+    }
+
+    :nth-child(2) {
+      @apply flex-grow;
+    }
+  }
 
   &-brand {
-    @apply cursor-default font-bold italic text-xl leading-6 select-none text-ruby-500;
+    @apply cursor-default font-extrabold text-xl leading-6 select-none;
   }
 }

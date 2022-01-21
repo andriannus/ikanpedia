@@ -2,12 +2,8 @@ import { FC } from "react";
 
 import styles from "./app-bar.module.scss";
 
-const AppBar: FC<{}> = () => {
-  return (
-    <div className={styles.AppBar}>
-      <span className={styles["AppBar-brand"]}>Ikanpedia</span>
-    </div>
-  );
+const AppBar: FC<{}> = ({ children }) => {
+  return <div className={styles.AppBar}>{children}</div>;
 };
 
 export default AppBar;
