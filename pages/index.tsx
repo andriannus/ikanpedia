@@ -154,6 +154,22 @@ const Home: NextPage = () => {
             </div>
           </li>
         </ul>
+
+        <div className={homeStyles["Pagination"]}>
+          <span className={homeStyles["Pagination-text"]}>
+            Menampilkan 25 dari 125 data
+          </span>
+
+          <button className={homeStyles["Pagination-button"]}>
+            <FontAwesomeIcon className="text-ruby-500" icon="caret-left" />
+          </button>
+
+          <span className={homeStyles["Pagination-page"]}>0</span>
+
+          <button className={homeStyles["Pagination-button"]}>
+            <FontAwesomeIcon className="text-ruby-500" icon="caret-right" />
+          </button>
+        </div>
       </Box>
     </>
   );
