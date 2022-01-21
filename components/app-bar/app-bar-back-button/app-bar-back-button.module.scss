@@ -1,0 +1,21 @@
+.AppBar-backButton {
+  @apply flex h-md items-center justify-center outline-none rounded-full transition duration-300 w-md;
+
+  -webkit-tap-highlight-color: transparent;
+
+  &:active,
+  &:focus {
+    @apply bg-gray-300;
+  }
+
+  &:disabled {
+    &.AppBar-backButton {
+      &:active,
+      &:focus {
+        @apply bg-transparent;
+      }
+    }
+
+    @apply cursor-not-allowed;
+  }
+}
