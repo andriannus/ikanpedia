@@ -6,6 +6,7 @@ import styles from "./chip.module.scss";
 interface ChipProps {
   active?: boolean;
   button?: boolean;
+  className?: string;
   small?: boolean;
 }
 
@@ -17,6 +18,7 @@ const Chip: FC<ChipProps> = ({ children, ...props }) => {
       [styles["is-active"]]: props.active,
     },
     styles["Chip"],
+    props.className,
   ]);
 
   return (
@@ -33,6 +35,7 @@ const Chip: FC<ChipProps> = ({ children, ...props }) => {
 Chip.defaultProps = {
   active: false,
   button: false,
+  className: "",
   small: false,
 };
 
