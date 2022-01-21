@@ -5,7 +5,7 @@ import { FC, MouseEventHandler } from "react";
 import styles from "./button.module.scss";
 
 interface ButtonProps {
-  color?: string;
+  color?: "" | "primary" | "success";
   disabled?: boolean;
   fullWidth?: boolean;
   href?: string;
