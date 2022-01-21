@@ -1,0 +1,9 @@
+.AppBar {
+  @apply flex items-center;
+
+  height: 80px;
+
+  &-brand {
+    @apply cursor-default font-bold italic text-xl leading-6 select-none text-ruby-500;
+  }
+}
