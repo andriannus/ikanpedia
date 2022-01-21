@@ -2,6 +2,7 @@ import type { NextPage } from "next";
 import { AppBar, AppBarBackButton, AppBarTitle } from "@/components/app-bar";
 
 import { Box } from "@/components/box";
+import { Button } from "@/components/button";
 
 const Detail: NextPage = () => {
   return (
@@ -24,7 +25,7 @@ const Detail: NextPage = () => {
             <span className="text-base text-ruby-500">Rp45.000</span>
           </div>
 
-          <div>
+          <div className="text-right">
             <p className="text-gray-700">Ukuran</p>
             <span className="text-base">450</span>
           </div>
@@ -36,10 +37,24 @@ const Detail: NextPage = () => {
         <span>25 Desember 2021</span>
       </Box>
 
-      <Box className="flex justify-between text-sm">
+      <Box className="flex justify-between mb-md text-sm">
         <strong>Lokasi</strong>
         <span>Buleleng, Bali</span>
       </Box>
+
+      <div className="flex">
+        <div className="mr-xs w-full">
+          <Button fullWidth small>
+            Edit
+          </Button>
+        </div>
+
+        <div className="ml-xs w-full">
+          <Button color="primary" fullWidth small>
+            Delete
+          </Button>
+        </div>
+      </div>
     </>
   );
 };
