@@ -1,10 +1,14 @@
 import type { NextPage } from "next";
-import { AppBar, AppBarBackButton, AppBarTitle } from "@/components/app-bar";
+import { useState } from "react";
 
+import { AppBar, AppBarBackButton, AppBarTitle } from "@/components/app-bar";
 import { Box } from "@/components/box";
 import { Button } from "@/components/button";
+import { Dialog } from "@/components/dialog";
 
 const Detail: NextPage = () => {
+  const [isDialogShown, setDialogStatus] = useState(false);
+
   return (
     <>
       <AppBar>
@@ -50,11 +54,20 @@ const Detail: NextPage = () => {
         </div>
 
         <div className="ml-xs w-full">
-          <Button color="primary" fullWidth small>
+          <Button
+            color="primary"
+            fullWidth
+            small
+            onClick={() => setDialogStatus(true)}
+          >
             Delete
           </Button>
         </div>
       </div>
+
+      <Dialog value={isDialogShown} onChange={setDialogStatus}>
+        <p>Apakah Anda yakin ingin menghapus komuditas ikan?</p>
+      </Dialog>
     </>
   );
 };
