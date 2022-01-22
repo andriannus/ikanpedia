@@ -7,6 +7,7 @@ import { AppBar } from "@/components/app-bar";
 import { Box } from "@/components/box";
 import { Chip } from "@/components/chip";
 import { Area, Commodity, useApiInvoker } from "@/services/api-invoker";
+import { paginateData, PaginatedData } from "@/utils/paginate";
 import { rupiahCurrency } from "@/utils/rupiah.util";
 
 import appBarStyles from "@/components/app-bar/app-bar.module.scss";
@@ -24,7 +25,9 @@ const Home: NextPage = () => {
 
   const [areas, setAreas] = useState<Area[]>([]);
   const [cities, setCities] = useState<string[]>([]);
-  const [commodities, setCommodities] = useState<Commodity[]>([]);
+  const [commodity, setCommodity] = useState<PaginatedData<Commodity>>(
+    {} as PaginatedData<Commodity>,
+  );
   const [provinces, setProvinces] = useState<string[]>([]);
   const [sizes, setSizes] = useState<string[]>([]);
 
@@ -43,15 +46,20 @@ const Home: NextPage = () => {
         setProvinces(provinces);
       });
 
-      fetchCommodities().then((tempCommodities) =>
-        setCommodities(tempCommodities),
-      );
+      paginateCommodity();
 
       fetchSizes().then((tempSizes) => setSizes(tempSizes));
     }
 
     fetchAllData();
   }, []);
+
+  async function paginateCommodity(page = 1): Promise<void> {
+    const tempCommodities = await fetchCommodities();
+    const paginatedCommodities = paginateData(tempCommodities, page);
+
+    setCommodity(paginatedCommodities);
+  }
 
   function selectCity(city: string): void {
     const validCity = filter.city === city ? "" : city;
@@ -177,56 +185,75 @@ const Home: NextPage = () => {
         </Box>
       )}
 
-      <Box>
-        <p className="font-bold mb-bs text-base leading-5 text-gray-900">
-          Data Komuditas Ikan
-        </p>
+      {commodity.data && (
+        <Box>
+          <p className="font-bold mb-bs text-base leading-5 text-gray-900">
+            Data Komuditas Ikan
+          </p>
 
-        <ul className={homeStyles["List"]}>
-          {commodities.map((commodity, index) => {
-            return (
-              <li
-                key={`commodity-${index}`}
-                className={homeStyles["List-item"]}
-                onClick={navigateToDetailPage}
-              >
-                <div className={homeStyles["List-itemContent"]}>
-                  <p className={homeStyles["List-itemTitle"]}>
-                    {commodity.komoditas || "-"}
-                  </p>
+          <ul className={homeStyles["List"]}>
+            {commodity.data?.map((item, index) => {
+              return (
+                <li
+                  key={`commodity-${index}`}
+                  className={homeStyles["List-item"]}
+                  onClick={navigateToDetailPage}
+                >
+                  <div className={homeStyles["List-itemContent"]}>
+                    <p className={homeStyles["List-itemTitle"]}>
+                      {item.komoditas || "-"}
+                    </p>
 
-                  <strong className={homeStyles["List-itemSubtitle"]}>
-                    {rupiahCurrency(commodity.price)}
-                  </strong>
-                </div>
+                    <strong className={homeStyles["List-itemSubtitle"]}>
+                      {rupiahCurrency(item.price)}
+                    </strong>
+                  </div>
 
-                <div className={homeStyles["List-itemAction"]}>
-                  <FontAwesomeIcon
-                    className="text-ruby-500"
-                    icon="chevron-right"
-                  />
-                </div>
-              </li>
-            );
-          })}
-        </ul>
+                  <div className={homeStyles["List-itemAction"]}>
+                    <FontAwesomeIcon
+                      className="text-ruby-500"
+                      icon="chevron-right"
+                    />
+                  </div>
+                </li>
+              );
+            })}
+          </ul>
 
-        <div className={homeStyles["Pagination"]}>
-          <span className={homeStyles["Pagination-text"]}>
-            Menampilkan 25 dari 125 data
-          </span>
+          <div className={homeStyles["Pagination"]}>
+            <span className={homeStyles["Pagination-text"]}>
+              Menampilkan{" "}
+              {commodity.meta.prevPage! * commodity.meta.perPage + 1} -&nbsp;
+              {commodity.meta.page * commodity.meta.perPage} dari&nbsp;
+              {commodity.meta.total} data
+            </span>
 
-          <button className={homeStyles["Pagination-button"]}>
-            <FontAwesomeIcon className="text-ruby-500" icon="caret-left" />
-          </button>
+            <button
+              className={homeStyles["Pagination-button"]}
+              disabled={!commodity.meta.prevPage}
+              onClick={() =>
+                paginateCommodity(commodity.meta.prevPage as number)
+              }
+            >
+              <FontAwesomeIcon className="text-ruby-500" icon="caret-left" />
+            </button>
 
-          <span className={homeStyles["Pagination-page"]}>0</span>
+            <span className={homeStyles["Pagination-page"]}>
+              {commodity.meta.page}
+            </span>
 
-          <button className={homeStyles["Pagination-button"]}>
-            <FontAwesomeIcon className="text-ruby-500" icon="caret-right" />
-          </button>
-        </div>
-      </Box>
+            <button
+              className={homeStyles["Pagination-button"]}
+              disabled={!commodity.meta.nextPage}
+              onClick={() =>
+                paginateCommodity(commodity.meta.nextPage as number)
+              }
+            >
+              <FontAwesomeIcon className="text-ruby-500" icon="caret-right" />
+            </button>
+          </div>
+        </Box>
+      )}
     </>
   );
 };
