@@ -1,0 +1,28 @@
+.Dialog {
+  @apply fixed flex h-screen items-center justify-center left-0 top-0 w-screen z-20;
+
+  background-color: rgba(0, 0, 0, 0.6);
+
+  &-container {
+    @apply bg-white overflow-y-auto p-bs relative rounded-bs;
+
+    max-height: 50vh;
+    max-width: theme("screens.mobile");
+    height: auto;
+    width: calc(100vw - 64px);
+  }
+
+  &-content {
+    max-width: calc(100% - 40px);
+  }
+
+  &-close {
+    @apply absolute outline-none right-bs rounded-full text-gray-900 transition duration-300 w-md z-20;
+
+    -webkit-tap-highlight-color: transparent;
+
+    &:active {
+      @apply bg-gray-300;
+    }
+  }
+}
