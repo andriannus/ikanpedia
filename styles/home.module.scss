@@ -2,6 +2,17 @@
   @apply bg-white;
 }
 
+.Link {
+  @apply cursor-pointer outline-none select-none text-ruby-500 text-xs;
+
+  -webkit-tap-highlight-color: transparent;
+
+  &:active,
+  &:focus {
+    @apply text-ruby-200;
+  }
+}
+
 .List {
   @apply border border-gray-300 rounded-2xs select-none;
 
