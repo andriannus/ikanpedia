@@ -37,7 +37,7 @@ const Detail: NextPage = () => {
       await deleteCommodity(id);
       router.replace("/");
     } catch (error) {
-      console.error(error);
+      //
     }
   }
 

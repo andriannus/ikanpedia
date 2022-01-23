@@ -50,7 +50,6 @@ const Edit: NextPage = () => {
 
     const tempCommodity = ls.get<Commodity>(EFY_COMMODITY);
     setCommodity(tempCommodity);
-    console.log(commodity);
 
     fetchAllData();
   }, []);

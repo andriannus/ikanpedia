@@ -14,7 +14,7 @@ interface SelectProps {
 const Select: FC<SelectProps> = ({ ...props }) => {
   return (
     <div className={`${styles["Select"]} ${props.className}`}>
-      <select defaultValue="" value={props.value} onChange={props.onChange}>
+      <select value={props.value} onChange={props.onChange}>
         <option value="" disabled>
           {props.placeholder}
         </option>

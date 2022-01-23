@@ -97,7 +97,7 @@ const Add: NextPage = () => {
       await createCommodity(validCommodity as Required<Commodity>);
       router.push("/");
     } catch (error) {
-      console.log("TES");
+      //
     } finally {
       setLoading({ isSubmit: false });
     }
