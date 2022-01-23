@@ -111,7 +111,7 @@ const Detail: NextPage = () => {
 
           <div className="flex">
             <div className="mr-xs w-full">
-              <Button fullWidth small>
+              <Button href="/edit" fullWidth small>
                 Edit
               </Button>
             </div>
