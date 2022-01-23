@@ -54,7 +54,7 @@ const Home: NextPage = () => {
   const isFilterShown = !!cities.length || !!provinces.length || !!sizes.length;
 
   useEffect(() => {
-    async function fetchAllData() {
+    function fetchAllData() {
       fetchAreas().then(({ areas, provinces }) => {
         setAreas(areas);
         setProvinces(provinces);
