@@ -1,4 +1,5 @@
 import type { NextPage } from "next";
+import Link from "next/link";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -234,9 +235,15 @@ const Home: NextPage = () => {
 
       {commodity.data && (
         <Box>
-          <p className="font-bold mb-bs text-base leading-5 text-gray-900">
-            Data Komuditas Ikan
-          </p>
+          <div className="flex items-center justify-between mb-bs">
+            <p className="font-bold text-base leading-5 text-gray-900">
+              Data Komuditas Ikan
+            </p>
+
+            <Link href="/add">
+              <a className={homeStyles["Link"]}>Tambah komoditas</a>
+            </Link>
+          </div>
 
           {commodity.data.length < 1 ? (
             <p className="text-xs text-center">Data tidak ditemukan</p>
