@@ -135,7 +135,10 @@ const Detail: NextPage = () => {
         actions={<DialogActions />}
         onChange={setDialogStatus}
       >
-        <p>Apakah Anda yakin ingin menghapus komuditas ikan?</p>
+        <p>
+          Apakah Anda yakin ingin menghapus komuditas{" "}
+          <strong>{commodity.komoditas}</strong>?
+        </p>
       </Dialog>
     </>
   );
