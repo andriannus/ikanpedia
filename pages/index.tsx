@@ -6,12 +6,19 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { AppBar } from "@/components/app-bar";
 import { Box } from "@/components/box";
 import { Chip } from "@/components/chip";
+import { FilterProvince } from "@/components/filter-province";
+import { FilterSize } from "@/components/filter-size";
 import { Area, Commodity, useApiInvoker } from "@/services/api-invoker";
 import { paginateData, PaginatedData } from "@/utils/paginate";
 import { rupiahCurrency } from "@/utils/rupiah.util";
 
 import appBarStyles from "@/components/app-bar/app-bar.module.scss";
 import homeStyles from "@/styles/home.module.scss";
+
+interface DialogStatus {
+  isProvince: boolean;
+  isSize: boolean;
+}
 
 interface Filter {
   city: string;
@@ -35,6 +42,11 @@ const Home: NextPage = () => {
     city: "",
     province: "",
     size: "",
+  });
+
+  const [dialogShown, setDialogStatus] = useState<Partial<DialogStatus>>({
+    isProvince: false,
+    isSize: false,
   });
 
   const isFilterShown = !!cities.length || !!provinces.length || !!sizes.length;
@@ -89,7 +101,7 @@ const Home: NextPage = () => {
     router.push("/detail");
   }
 
-  function getFirstThree<T = any>(items: T[]) {
+  function getFirstThree<T = any>(items: T[]): T[] {
     const itemsCloned = JSON.parse(JSON.stringify(items)) as T[];
     const firstThree = itemsCloned.splice(0, 3);
 
@@ -102,6 +114,22 @@ const Home: NextPage = () => {
         <span className={appBarStyles["AppBar-brand"]}>Ikanpedia</span>
       </AppBar>
 
+      <FilterSize
+        value={dialogShown.isSize}
+        selected={filter.size}
+        sizes={sizes}
+        onChange={(isShown) => setDialogStatus({ isSize: isShown })}
+        onSelect={(size) => selectSize(size)}
+      />
+
+      <FilterProvince
+        value={dialogShown.isProvince}
+        provinces={provinces}
+        selected={filter.province}
+        onChange={(isShown) => setDialogStatus({ isSize: isShown })}
+        onSelect={(size) => selectProvince(size)}
+      />
+
       {isFilterShown && (
         <Box className="mb-md">
           <p className="font-bold mb-bs text-base leading-5 text-gray-900">
@@ -112,7 +140,13 @@ const Home: NextPage = () => {
             <div className="mb-bs">
               <div className="flex items-center justify-between mb-sm">
                 <p className="text-sm leading-5">Ukuran</p>
-                <span className={homeStyles["Link"]}>Tampilkan semua</span>
+
+                <span
+                  className={homeStyles["Link"]}
+                  onClick={() => setDialogStatus({ isSize: true })}
+                >
+                  Tampilkan semua
+                </span>
               </div>
 
               {getFirstThree(sizes).map((size, index) => {
@@ -137,7 +171,12 @@ const Home: NextPage = () => {
                 <p className="text-sm leading-5">Provinsi</p>
 
                 {provinces.length > 3 && (
-                  <span className={homeStyles["Link"]}>Tampilkan semua</span>
+                  <span
+                    className={homeStyles["Link"]}
+                    onClick={() => setDialogStatus({ isProvince: true })}
+                  >
+                    Tampilkan semua
+                  </span>
                 )}
               </div>
 
@@ -191,67 +230,80 @@ const Home: NextPage = () => {
             Data Komuditas Ikan
           </p>
 
-          <ul className={homeStyles["List"]}>
-            {commodity.data?.map((item, index) => {
-              return (
-                <li
-                  key={`commodity-${index}`}
-                  className={homeStyles["List-item"]}
-                  onClick={navigateToDetailPage}
+          {commodity.data.length < 1 ? (
+            <p className="text-xs text-center">Data tidak ditemukan</p>
+          ) : (
+            <>
+              <ul className={homeStyles["List"]}>
+                {commodity.data.map((item, index) => {
+                  return (
+                    <li
+                      key={`commodity-${index}`}
+                      className={homeStyles["List-item"]}
+                      onClick={navigateToDetailPage}
+                    >
+                      <div className={homeStyles["List-itemContent"]}>
+                        <p className={homeStyles["List-itemTitle"]}>
+                          {item.komoditas || "-"}
+                        </p>
+
+                        <strong className={homeStyles["List-itemSubtitle"]}>
+                          {rupiahCurrency(item.price)}
+                        </strong>
+                      </div>
+
+                      <div className={homeStyles["List-itemAction"]}>
+                        <FontAwesomeIcon
+                          className="text-ruby-500"
+                          icon="chevron-right"
+                        />
+                      </div>
+                    </li>
+                  );
+                })}
+              </ul>
+
+              <div className={homeStyles["Pagination"]}>
+                <span className={homeStyles["Pagination-text"]}>
+                  Menampilkan{" "}
+                  {commodity.meta.prevPage! * commodity.meta.perPage + 1}{" "}
+                  -&nbsp;
+                  {commodity.meta.page * commodity.meta.perPage} dari&nbsp;
+                  {commodity.meta.total} data
+                </span>
+
+                <button
+                  className={homeStyles["Pagination-button"]}
+                  disabled={!commodity.meta.prevPage}
+                  onClick={() =>
+                    paginateCommodity(commodity.meta.prevPage as number)
+                  }
                 >
-                  <div className={homeStyles["List-itemContent"]}>
-                    <p className={homeStyles["List-itemTitle"]}>
-                      {item.komoditas || "-"}
-                    </p>
+                  <FontAwesomeIcon
+                    className="text-ruby-500"
+                    icon="caret-left"
+                  />
+                </button>
 
-                    <strong className={homeStyles["List-itemSubtitle"]}>
-                      {rupiahCurrency(item.price)}
-                    </strong>
-                  </div>
+                <span className={homeStyles["Pagination-page"]}>
+                  {commodity.meta.page}
+                </span>
 
-                  <div className={homeStyles["List-itemAction"]}>
-                    <FontAwesomeIcon
-                      className="text-ruby-500"
-                      icon="chevron-right"
-                    />
-                  </div>
-                </li>
-              );
-            })}
-          </ul>
-
-          <div className={homeStyles["Pagination"]}>
-            <span className={homeStyles["Pagination-text"]}>
-              Menampilkan{" "}
-              {commodity.meta.prevPage! * commodity.meta.perPage + 1} -&nbsp;
-              {commodity.meta.page * commodity.meta.perPage} dari&nbsp;
-              {commodity.meta.total} data
-            </span>
-
-            <button
-              className={homeStyles["Pagination-button"]}
-              disabled={!commodity.meta.prevPage}
-              onClick={() =>
-                paginateCommodity(commodity.meta.prevPage as number)
-              }
-            >
-              <FontAwesomeIcon className="text-ruby-500" icon="caret-left" />
-            </button>
-
-            <span className={homeStyles["Pagination-page"]}>
-              {commodity.meta.page}
-            </span>
-
-            <button
-              className={homeStyles["Pagination-button"]}
-              disabled={!commodity.meta.nextPage}
-              onClick={() =>
-                paginateCommodity(commodity.meta.nextPage as number)
-              }
-            >
-              <FontAwesomeIcon className="text-ruby-500" icon="caret-right" />
-            </button>
-          </div>
+                <button
+                  className={homeStyles["Pagination-button"]}
+                  disabled={!commodity.meta.nextPage}
+                  onClick={() =>
+                    paginateCommodity(commodity.meta.nextPage as number)
+                  }
+                >
+                  <FontAwesomeIcon
+                    className="text-ruby-500"
+                    icon="caret-right"
+                  />
+                </button>
+              </div>
+            </>
+          )}
         </Box>
       )}
     </>
