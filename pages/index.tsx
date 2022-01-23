@@ -11,7 +11,7 @@ import { FilterSize } from "@/components/filter-size";
 import { Area, Commodity, useApiInvoker } from "@/services/api-invoker";
 import { useLocalStorage } from "@/services/local-storage";
 import { paginateData, PaginatedData } from "@/utils/paginate";
-import { rupiahCurrency } from "@/utils/rupiah.util";
+import { rupiahCurrency } from "@/utils/rupiah";
 
 import appBarStyles from "@/components/app-bar/app-bar.module.scss";
 import homeStyles from "@/styles/home.module.scss";

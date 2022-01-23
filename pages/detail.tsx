@@ -9,7 +9,7 @@ import { Dialog } from "@/components/dialog";
 import { Commodity, useApiInvoker } from "@/services/api-invoker";
 import { useLocalStorage } from "@/services/local-storage";
 import { transformToDateLongFormat } from "@/utils/date";
-import { rupiahCurrency } from "@/utils/rupiah.util";
+import { rupiahCurrency } from "@/utils/rupiah";
 
 import dialogStyles from "@/components/dialog/dialog.module.scss";
 
