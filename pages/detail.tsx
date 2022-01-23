@@ -1,17 +1,22 @@
 import type { NextPage } from "next";
-import { useEffect, useState } from "react";
+import { useRouter } from "next/router";
+import { FC, useEffect, useState } from "react";
 
 import { AppBar, AppBarBackButton, AppBarTitle } from "@/components/app-bar";
 import { Box } from "@/components/box";
 import { Button } from "@/components/button";
 import { Dialog } from "@/components/dialog";
-import { Commodity } from "@/services/api-invoker";
+import { Commodity, useApiInvoker } from "@/services/api-invoker";
 import { useLocalStorage } from "@/services/local-storage";
 import { transformToDateLongFormat } from "@/utils/date";
 import { rupiahCurrency } from "@/utils/rupiah.util";
 
+import dialogStyles from "@/components/dialog/dialog.module.scss";
+
 const Detail: NextPage = () => {
+  const { deleteCommodity } = useApiInvoker();
   const ls = useLocalStorage();
+  const router = useRouter();
 
   const [commodity, setCommodity] = useState<Commodity>({} as Commodity);
   const [isDialogShown, setDialogStatus] = useState(false);
@@ -25,6 +30,35 @@ const Detail: NextPage = () => {
   }, []);
 
   if (!isReady) return null;
+
+  async function handleDeleteCommodity(id: string): Promise<void> {
+    try {
+      await deleteCommodity(id);
+      router.replace("/");
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  const DialogActions: FC<{}> = () => {
+    return (
+      <div className={dialogStyles["Dialog-actions"]}>
+        <button
+          className={`${dialogStyles["Dialog-action"]} mr-xs`}
+          onClick={() => handleDeleteCommodity(commodity.uuid)}
+        >
+          Hapus
+        </button>
+
+        <button
+          className={`${dialogStyles["Dialog-action"]} ml-xs`}
+          onClick={() => setDialogStatus(false)}
+        >
+          <strong>Batal</strong>
+        </button>
+      </div>
+    );
+  };
 
   return (
     <>
@@ -96,7 +130,11 @@ const Detail: NextPage = () => {
         </>
       )}
 
-      <Dialog value={isDialogShown} onChange={setDialogStatus}>
+      <Dialog
+        value={isDialogShown}
+        actions={<DialogActions />}
+        onChange={setDialogStatus}
+      >
         <p>Apakah Anda yakin ingin menghapus komuditas ikan?</p>
       </Dialog>
     </>

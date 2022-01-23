@@ -1,6 +1,7 @@
 import SteinStore from "stein-js-client";
 
 interface ApiInvokerService {
+  deleteCommodity(id: string): Promise<void>;
   fetchAreas(): Promise<Areas>;
   fetchCommodities(search?: Record<string, string>): Promise<Commodity[]>;
   fetchSizes(): Promise<string[]>;
@@ -67,5 +68,9 @@ export function useApiInvoker(): ApiInvokerService {
     return validSizes;
   }
 
-  return { fetchCommodities, fetchAreas, fetchSizes };
+  function deleteCommodity(id: string): Promise<void> {
+    return apiInvoker.delete("list", { search: { uuid: id } });
+  }
+
+  return { deleteCommodity, fetchCommodities, fetchAreas, fetchSizes };
 }
