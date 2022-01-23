@@ -22,6 +22,7 @@ const Detail: NextPage = () => {
   const [commodity, setCommodity] = useState<Commodity>({} as Commodity);
   const [isDialogShown, setDialogStatus] = useState(false);
   const [isReady, setReady] = useState(false);
+  const [isLoading, setLoading] = useState(false);
 
   useEffect(() => {
     const tempCommodity = ls.get<Commodity>(EFY_COMMODITY);
@@ -33,11 +34,18 @@ const Detail: NextPage = () => {
   if (!isReady) return null;
 
   async function handleDeleteCommodity(id: string): Promise<void> {
+    setLoading(true);
+
     try {
       await deleteCommodity(id);
+
+      ls.remove(EFY_COMMODITY);
+      setDialogStatus(false);
       router.replace("/");
     } catch (error) {
       //
+    } finally {
+      setLoading(false);
     }
   }
 
@@ -46,6 +54,7 @@ const Detail: NextPage = () => {
       <div className={dialogStyles["Dialog-actions"]}>
         <button
           className={`${dialogStyles["Dialog-action"]} mr-xs`}
+          disabled={isLoading}
           onClick={() => handleDeleteCommodity(commodity.uuid)}
         >
           Hapus
@@ -53,6 +62,7 @@ const Detail: NextPage = () => {
 
         <button
           className={`${dialogStyles["Dialog-action"]} ml-xs`}
+          disabled={isLoading}
           onClick={() => setDialogStatus(false)}
         >
           <strong>Batal</strong>

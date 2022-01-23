@@ -41,6 +41,7 @@ const Home: NextPage = () => {
   );
   const [provinces, setProvinces] = useState<string[]>([]);
   const [sizes, setSizes] = useState<string[]>([]);
+  const [isLoading, setLoading] = useState(false);
 
   const [filter, setFilter] = useState<Partial<Filter>>({
     area_kota: "",
@@ -75,10 +76,18 @@ const Home: NextPage = () => {
   }, [filter]);
 
   async function paginateCommodities(search = filter, page = 1): Promise<void> {
-    const tempCommodities = await fetchCommodities(search);
-    const paginatedCommodities = paginateData(tempCommodities, page);
+    setLoading(true);
 
-    setCommodity(paginatedCommodities);
+    try {
+      const tempCommodities = await fetchCommodities(search);
+      const paginatedCommodities = paginateData(tempCommodities, page);
+
+      setCommodity(paginatedCommodities);
+    } catch (error) {
+      //
+    } finally {
+      setLoading(false);
+    }
   }
 
   function selectCity(city: string): void {
@@ -233,96 +242,86 @@ const Home: NextPage = () => {
         </Box>
       )}
 
-      {commodity.data && (
-        <Box>
-          <div className="flex items-center justify-between mb-bs">
-            <p className="font-bold text-base leading-5 text-gray-900">
-              Data Komuditas Ikan
-            </p>
+      <Box>
+        <div className="flex items-center justify-between mb-bs">
+          <p className="font-bold text-base leading-5 text-gray-900">
+            Data Komuditas Ikan
+          </p>
 
-            <Link href="/add">
-              <a className={homeStyles["Link"]}>Tambah komoditas</a>
-            </Link>
-          </div>
+          <Link href="/add">
+            <a className={homeStyles["Link"]}>Tambah komoditas</a>
+          </Link>
+        </div>
 
-          {commodity.data.length < 1 ? (
-            <p className="text-xs text-center">Data tidak ditemukan</p>
-          ) : (
-            <>
-              <ul className={homeStyles["List"]}>
-                {commodity.data.map((item, index) => {
-                  return (
-                    <li
-                      key={`commodity-${index}`}
-                      className={homeStyles["List-item"]}
-                      onClick={() => handleDetailCommodity(item)}
-                    >
-                      <div className={homeStyles["List-itemContent"]}>
-                        <p className={homeStyles["List-itemTitle"]}>
-                          {item.komoditas || "-"}
-                        </p>
+        {isLoading && <p className="text-xs text-center">Loading...</p>}
 
-                        <strong className={homeStyles["List-itemSubtitle"]}>
-                          {rupiahCurrency(item.price)}
-                        </strong>
-                      </div>
+        {!isLoading && !commodity.data?.length && (
+          <p className="text-xs text-center">Data tidak ditemukan</p>
+        )}
 
-                      <div className={homeStyles["List-itemAction"]}>
-                        <FontAwesomeIcon
-                          className="text-ruby-500"
-                          icon="chevron-right"
-                        />
-                      </div>
-                    </li>
-                  );
-                })}
-              </ul>
+        {!isLoading && commodity.data?.length > 0 && (
+          <>
+            <ul className={homeStyles["List"]}>
+              {commodity.data.map((item, index) => {
+                return (
+                  <li
+                    key={`commodity-${index}`}
+                    className={homeStyles["List-item"]}
+                    onClick={() => handleDetailCommodity(item)}
+                  >
+                    <div className={homeStyles["List-itemContent"]}>
+                      <p className={homeStyles["List-itemTitle"]}>
+                        {item.komoditas || "-"}
+                      </p>
 
-              <div className={homeStyles["Pagination"]}>
-                <span className={homeStyles["Pagination-text"]}>
-                  Total ada {commodity.meta.total} data
-                </span>
+                      <strong className={homeStyles["List-itemSubtitle"]}>
+                        {rupiahCurrency(item.price)}
+                      </strong>
+                    </div>
 
-                <button
-                  className={homeStyles["Pagination-button"]}
-                  disabled={!commodity.meta.prevPage}
-                  onClick={() =>
-                    paginateCommodities(
-                      filter,
-                      commodity.meta.prevPage as number,
-                    )
-                  }
-                >
-                  <FontAwesomeIcon
-                    className="text-ruby-500"
-                    icon="caret-left"
-                  />
-                </button>
+                    <div className={homeStyles["List-itemAction"]}>
+                      <FontAwesomeIcon
+                        className="text-ruby-500"
+                        icon="chevron-right"
+                      />
+                    </div>
+                  </li>
+                );
+              })}
+            </ul>
 
-                <span className={homeStyles["Pagination-page"]}>
-                  {commodity.meta.page}
-                </span>
+            <div className={homeStyles["Pagination"]}>
+              <span className={homeStyles["Pagination-text"]}>
+                Total ada {commodity.meta.total} data
+              </span>
 
-                <button
-                  className={homeStyles["Pagination-button"]}
-                  disabled={!commodity.meta.nextPage}
-                  onClick={() =>
-                    paginateCommodities(
-                      filter,
-                      commodity.meta.nextPage as number,
-                    )
-                  }
-                >
-                  <FontAwesomeIcon
-                    className="text-ruby-500"
-                    icon="caret-right"
-                  />
-                </button>
-              </div>
-            </>
-          )}
-        </Box>
-      )}
+              <button
+                className={homeStyles["Pagination-button"]}
+                disabled={!commodity.meta.prevPage}
+                onClick={() =>
+                  paginateCommodities(filter, commodity.meta.prevPage as number)
+                }
+              >
+                <FontAwesomeIcon className="text-ruby-500" icon="caret-left" />
+              </button>
+
+              <span className={homeStyles["Pagination-page"]}>
+                {commodity.meta.page}
+              </span>
+
+              <button
+                className={homeStyles["Pagination-button"]}
+                disabled={!commodity.meta.nextPage}
+                onClick={() =>
+                  paginateCommodities(filter, commodity.meta.nextPage as number)
+                }
+              >
+                <FontAwesomeIcon className="text-ruby-500" icon="caret-right" />
+              </button>
+            </div>
+          </>
+        )}
+      </Box>
     </>
   );
 };
