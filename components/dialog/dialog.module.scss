@@ -8,6 +8,7 @@
 
     max-height: 50vh;
     max-width: theme("screens.mobile");
+    min-height: 56px;
     height: auto;
     width: calc(100vw - 64px);
   }
