@@ -120,7 +120,7 @@ const Detail: NextPage = () => {
             </span>
           </Box>
 
-          <div className="flex">
+          <div className="flex mx-xs mobile:mx-0">
             <div className="mr-xs w-full">
               <Button href="/edit" fullWidth small>
                 Edit
