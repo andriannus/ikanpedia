@@ -2,6 +2,12 @@
 @tailwind components;
 @tailwind utilities;
 
+html {
+  &.is-clipped {
+    @apply overflow-hidden;
+  }
+}
+
 .Document {
   @apply bg-gray-100 m-auto max-w-screen-md;
 }
