@@ -10,6 +10,7 @@ interface ButtonProps {
   fullWidth?: boolean;
   href?: string;
   id?: string;
+  loading?: boolean;
   onClick?: MouseEventHandler<HTMLButtonElement>;
   outlined?: boolean;
   rounded?: boolean;
@@ -22,6 +23,7 @@ const Button: FC<ButtonProps> = ({ children, ...props }) => {
     {
       [styles[`Button--${props.color}`]]: !!props.color,
       [styles["Button--fullWidth"]]: props.fullWidth,
+      [styles["Button--loading"]]: props.loading,
       [styles["Button--outlined"]]: props.outlined,
       [styles["Button--rounded"]]: props.rounded,
       [styles["Button--small"]]: props.small,
@@ -45,7 +47,16 @@ const Button: FC<ButtonProps> = ({ children, ...props }) => {
       type={props.type}
       onClick={props.onClick}
     >
-      {children}
+      {!props.loading ? (
+        children
+      ) : (
+        <div className={styles["Loading"]}>
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+        </div>
+      )}
     </button>
   );
 };
@@ -56,6 +67,7 @@ Button.defaultProps = {
   fullWidth: false,
   href: "",
   id: "",
+  loading: false,
   onClick: () => {},
   outlined: false,
   rounded: false,
