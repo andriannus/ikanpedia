@@ -8,6 +8,7 @@ import { Box } from "@/components/box";
 import { Chip } from "@/components/chip";
 import { FilterProvince } from "@/components/filter-province";
 import { FilterSize } from "@/components/filter-size";
+import { EFY_COMMODITY } from "@/constants/storage.constant";
 import { Area, Commodity, useApiInvoker } from "@/services/api-invoker";
 import { useLocalStorage } from "@/services/local-storage";
 import { paginateData, PaginatedData } from "@/utils/paginate";
@@ -104,7 +105,7 @@ const Home: NextPage = () => {
   }
 
   function handleDetailCommodity(data: Commodity): void {
-    ls.set("_efyCommodity", data);
+    ls.set(EFY_COMMODITY, data);
     router.push("/detail");
   }
 

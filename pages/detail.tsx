@@ -6,6 +6,7 @@ import { AppBar, AppBarBackButton, AppBarTitle } from "@/components/app-bar";
 import { Box } from "@/components/box";
 import { Button } from "@/components/button";
 import { Dialog } from "@/components/dialog";
+import { EFY_COMMODITY } from "@/constants/storage.constant";
 import { Commodity, useApiInvoker } from "@/services/api-invoker";
 import { useLocalStorage } from "@/services/local-storage";
 import { transformToDateLongFormat } from "@/utils/date";
@@ -23,7 +24,7 @@ const Detail: NextPage = () => {
   const [isReady, setReady] = useState(false);
 
   useEffect(() => {
-    const tempCommodity = ls.get<Commodity>("_efyCommodity");
+    const tempCommodity = ls.get<Commodity>(EFY_COMMODITY);
 
     setCommodity(tempCommodity);
     setReady(true);

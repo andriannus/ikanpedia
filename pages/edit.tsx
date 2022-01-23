@@ -7,6 +7,7 @@ import { Box } from "@/components/box";
 import { Button } from "@/components/button";
 import { Select } from "@/components/select";
 import { TextField } from "@/components/text-field";
+import { EFY_COMMODITY } from "@/constants/storage.constant";
 import { Area, Commodity, useApiInvoker } from "@/services/api-invoker";
 import { useLocalStorage } from "@/services/local-storage";
 
@@ -47,7 +48,7 @@ const Edit: NextPage = () => {
       }
     }
 
-    const tempCommodity = ls.get<Commodity>("_efyCommodity");
+    const tempCommodity = ls.get<Commodity>(EFY_COMMODITY);
     setCommodity(tempCommodity);
     console.log(commodity);
 
