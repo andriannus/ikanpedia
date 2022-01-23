@@ -41,7 +41,7 @@ const Home: NextPage = () => {
   );
   const [provinces, setProvinces] = useState<string[]>([]);
   const [sizes, setSizes] = useState<string[]>([]);
-  const [isLoading, setLoading] = useState(false);
+  const [isLoading, setLoading] = useState(true);
 
   const [filter, setFilter] = useState<Partial<Filter>>({
     area_kota: "",
@@ -119,9 +119,9 @@ const Home: NextPage = () => {
     router.push("/detail");
   }
 
-  function getFirstThree<T = any>(items: T[]): T[] {
+  function getFirstFour<T = any>(items: T[]): T[] {
     const itemsCloned = JSON.parse(JSON.stringify(items)) as T[];
-    const firstThree = itemsCloned.splice(0, 3);
+    const firstThree = itemsCloned.splice(0, 4);
 
     return firstThree;
   }
@@ -167,7 +167,7 @@ const Home: NextPage = () => {
                 </span>
               </div>
 
-              {getFirstThree(sizes).map((size, index) => {
+              {getFirstFour(sizes).map((size, index) => {
                 return (
                   <Chip
                     key={`size-${index}`}
@@ -198,7 +198,7 @@ const Home: NextPage = () => {
                 )}
               </div>
 
-              {getFirstThree(provinces).map((province, index) => {
+              {getFirstFour(provinces).map((province, index) => {
                 return (
                   <Chip
                     key={`province-${index}`}
@@ -224,7 +224,7 @@ const Home: NextPage = () => {
                 )}
               </div>
 
-              {getFirstThree(cities).map((city, index) => {
+              {getFirstFour(cities).map((city, index) => {
                 return (
                   <Chip
                     key={`city-${index}`}
