@@ -1,10 +1,15 @@
 import SteinStore from "stein-js-client";
 
 interface ApiInvokerService {
+  createCommodity(commodity: Commodity): Promise<void>;
   deleteCommodity(id: string): Promise<void>;
   fetchAreas(): Promise<Areas>;
   fetchCommodities(search?: Record<string, string>): Promise<Commodity[]>;
   fetchSizes(): Promise<string[]>;
+  updateCommodity(
+    commodity: Omit<Commodity, "uuid">,
+    uuid: string,
+  ): Promise<void>;
 }
 
 export interface Area {
@@ -72,5 +77,26 @@ export function useApiInvoker(): ApiInvokerService {
     return apiInvoker.delete("list", { search: { uuid: id } });
   }
 
-  return { deleteCommodity, fetchCommodities, fetchAreas, fetchSizes };
+  function createCommodity(commodity: Commodity): Promise<void> {
+    return apiInvoker.append("list", [commodity]);
+  }
+
+  function updateCommodity(
+    commodity: Omit<Commodity, "uuid">,
+    uuid: string,
+  ): Promise<void> {
+    return apiInvoker.edit("list", {
+      search: { uuid },
+      set: commodity,
+    });
+  }
+
+  return {
+    createCommodity,
+    deleteCommodity,
+    fetchCommodities,
+    fetchAreas,
+    fetchSizes,
+    updateCommodity,
+  };
 }
