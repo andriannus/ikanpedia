@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { ChangeEventHandler, FC } from "react";
 
 import styles from "./text-field.module.scss";
 
@@ -9,6 +9,7 @@ interface TextFieldProps {
   disabled?: boolean;
   id?: string;
   name?: string;
+  onChange?: ChangeEventHandler<HTMLInputElement>;
   placeholder?: string;
   readOnly?: boolean;
   type?: string;
@@ -29,6 +30,8 @@ const TextField: FC<TextFieldProps> = ({ ...props }) => {
         readOnly={props.readOnly}
         title={props.placeholder}
         type={props.type}
+        value={props.value}
+        onChange={props.onChange}
       />
     </div>
   );
@@ -41,6 +44,7 @@ TextField.defaultProps = {
   disabled: false,
   id: "",
   name: "",
+  onChange: undefined,
   placeholder: "",
   readOnly: false,
   type: "text",
