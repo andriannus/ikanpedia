@@ -9,6 +9,7 @@ import { Chip } from "@/components/chip";
 import { FilterProvince } from "@/components/filter-province";
 import { FilterSize } from "@/components/filter-size";
 import { Area, Commodity, useApiInvoker } from "@/services/api-invoker";
+import { useLocalStorage } from "@/services/local-storage";
 import { paginateData, PaginatedData } from "@/utils/paginate";
 import { rupiahCurrency } from "@/utils/rupiah.util";
 
@@ -28,6 +29,7 @@ interface Filter {
 
 const Home: NextPage = () => {
   const { fetchAreas, fetchCommodities, fetchSizes } = useApiInvoker();
+  const ls = useLocalStorage();
   const router = useRouter();
 
   const [areas, setAreas] = useState<Area[]>([]);
@@ -101,7 +103,8 @@ const Home: NextPage = () => {
     setFilter({ ...filter, size: validSize });
   }
 
-  function navigateToDetailPage(): void {
+  function handleDetailCommodity(data: Commodity): void {
+    ls.set("_efyCommodity", data);
     router.push("/detail");
   }
 
@@ -244,7 +247,7 @@ const Home: NextPage = () => {
                     <li
                       key={`commodity-${index}`}
                       className={homeStyles["List-item"]}
-                      onClick={navigateToDetailPage}
+                      onClick={() => handleDetailCommodity(item)}
                     >
                       <div className={homeStyles["List-itemContent"]}>
                         <p className={homeStyles["List-itemTitle"]}>
@@ -269,11 +272,7 @@ const Home: NextPage = () => {
 
               <div className={homeStyles["Pagination"]}>
                 <span className={homeStyles["Pagination-text"]}>
-                  Menampilkan{" "}
-                  {commodity.meta.prevPage! * commodity.meta.perPage + 1}{" "}
-                  -&nbsp;
-                  {commodity.meta.page * commodity.meta.perPage} dari&nbsp;
-                  {commodity.meta.total} data
+                  Total ada {commodity.meta.total} data
                 </span>
 
                 <button
