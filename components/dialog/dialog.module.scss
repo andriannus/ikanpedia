@@ -3,6 +3,31 @@
 
   background-color: rgba(0, 0, 0, 0.6);
 
+  &-action {
+    @apply bg-white py-xs rounded-xs text-ruby-500 transition duration-300 w-full;
+
+    -webkit-tap-highlight-color: transparent;
+
+    &:active,
+    &:hover,
+    &:focus {
+      @apply bg-ruby-500 text-white;
+    }
+
+    &:active,
+    &:focus {
+      @apply ring ring-red-200;
+    }
+
+    &:focus {
+      @apply bg-ruby-600 border-ruby-600;
+    }
+  }
+
+  &-actions {
+    @apply flex items-center justify-between mt-md;
+  }
+
   &-container {
     @apply bg-white overflow-y-auto p-bs relative rounded-bs;
 

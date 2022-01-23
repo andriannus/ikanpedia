@@ -4,6 +4,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import styles from "./dialog.module.scss";
 
 interface DialogProps {
+  actions?: JSX.Element;
   dismissible?: boolean;
   id?: string;
   onChange?: (value: boolean) => void;
@@ -30,12 +31,15 @@ const Dialog: FC<DialogProps> = ({ children, ...props }) => {
         </button>
 
         <div className={styles["Dialog-content"]}>{children}</div>
+
+        {props.actions}
       </div>
     </div>
   );
 };
 
 Dialog.defaultProps = {
+  actions: undefined,
   dismissible: false,
   id: "",
   onChange: undefined,
