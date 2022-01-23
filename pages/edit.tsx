@@ -22,7 +22,7 @@ const Edit: NextPage = () => {
   const router = useRouter();
 
   const [loading, setLoading] = useState<Partial<Loading>>({
-    isFetch: false,
+    isFetch: true,
     isSubmit: false,
   });
   const [areas, setAreas] = useState<Area[]>([]);
