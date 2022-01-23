@@ -11,6 +11,10 @@ export function useLocalStorage(): LocalStorageService {
     localStorage.setItem(key, data);
   }
 
+  function remove(key: string): void {
+    localStorage.removeItem(key);
+  }
+
   function reset(): void {
     localStorage.clear();
   }
@@ -19,5 +23,5 @@ export function useLocalStorage(): LocalStorageService {
     return !!localStorage.getItem(key);
   }
 
-  return { get, isExist, reset, set };
+  return { get, isExist, remove, reset, set };
 }
