@@ -1,5 +1,7 @@
-import { FC, MouseEventHandler } from "react";
+import { FC, MouseEventHandler, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+
+import { useClip } from "@/hooks/clip";
 
 import styles from "./dialog.module.scss";
 
@@ -13,11 +15,17 @@ interface DialogProps {
 }
 
 const Dialog: FC<DialogProps> = ({ children, ...props }) => {
-  if (!props.value) return null;
+  const { clipHtml, removeClipHtml } = useClip();
+
+  useEffect(() => {
+    props.value ? clipHtml() : removeClipHtml();
+  }, [props.value]);
 
   function closeDialog(): void {
     props.onChange?.(!props.value);
   }
+
+  if (!props.value) return null;
 
   return (
     <div className={styles["Dialog"]}>
