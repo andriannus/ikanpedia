@@ -5,8 +5,6 @@ export function paginateData<T>(items: T[], page: number): PaginatedData<T> {
   const total = items.length;
   const totalPage = Math.ceil(total / limit);
 
-  console.log((page - 1) * limit);
-
   return {
     data: items.splice((page - 1) * limit, limit),
     meta: {
