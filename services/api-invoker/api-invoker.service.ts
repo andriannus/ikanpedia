@@ -2,7 +2,7 @@ import SteinStore from "stein-js-client";
 
 interface ApiInvokerService {
   fetchAreas(): Promise<Areas>;
-  fetchCommodities(): Promise<Commodity[]>;
+  fetchCommodities(search?: Record<string, string>): Promise<Commodity[]>;
   fetchSizes(): Promise<string[]>;
 }
 
@@ -34,8 +34,15 @@ export function useApiInvoker(): ApiInvokerService {
 
   const apiInvoker = new SteinStore(STEIN_URL);
 
-  async function fetchCommodities(): Promise<Commodity[]> {
-    const commodities: Commodity[] = await apiInvoker.read("list");
+  async function fetchCommodities(
+    search: Record<string, string> = {},
+  ): Promise<Commodity[]> {
+    const validSearch = Object.fromEntries(
+      Object.entries(search).filter(([_, v]) => !!v),
+    );
+    const commodities: Commodity[] = await apiInvoker.read("list", {
+      search: validSearch,
+    });
     const validCommodities = commodities.filter((commodity) => {
       return !!commodity.uuid;
     });

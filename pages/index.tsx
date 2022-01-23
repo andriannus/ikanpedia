@@ -21,8 +21,8 @@ interface DialogStatus {
 }
 
 interface Filter {
-  city: string;
-  province: string;
+  area_kota: string;
+  area_provinsi: string;
   size: string;
 }
 
@@ -39,8 +39,8 @@ const Home: NextPage = () => {
   const [sizes, setSizes] = useState<string[]>([]);
 
   const [filter, setFilter] = useState<Partial<Filter>>({
-    city: "",
-    province: "",
+    area_kota: "",
+    area_provinsi: "",
     size: "",
   });
 
@@ -58,7 +58,7 @@ const Home: NextPage = () => {
         setProvinces(provinces);
       });
 
-      paginateCommodity();
+      paginateCommodities();
 
       fetchSizes().then((tempSizes) => setSizes(tempSizes));
     }
@@ -66,21 +66,25 @@ const Home: NextPage = () => {
     fetchAllData();
   }, []);
 
-  async function paginateCommodity(page = 1): Promise<void> {
-    const tempCommodities = await fetchCommodities();
+  useEffect(() => {
+    paginateCommodities(filter);
+  }, [filter]);
+
+  async function paginateCommodities(search = filter, page = 1): Promise<void> {
+    const tempCommodities = await fetchCommodities(search);
     const paginatedCommodities = paginateData(tempCommodities, page);
 
     setCommodity(paginatedCommodities);
   }
 
   function selectCity(city: string): void {
-    const validCity = filter.city === city ? "" : city;
-    setFilter({ ...filter, city: validCity });
+    const validCity = filter.area_kota === city ? "" : city;
+    setFilter({ ...filter, area_kota: validCity });
   }
 
   function selectProvince(province: string): void {
-    const validProvince = filter.province === province ? "" : province;
-    setFilter({ ...filter, province: validProvince });
+    const validProvince = filter.area_provinsi === province ? "" : province;
+    setFilter({ ...filter, area_provinsi: validProvince, area_kota: "" });
 
     if (validProvince) {
       const validAreas = areas.filter(
@@ -125,7 +129,7 @@ const Home: NextPage = () => {
       <FilterProvince
         value={dialogShown.isProvince}
         provinces={provinces}
-        selected={filter.province}
+        selected={filter.area_provinsi}
         onChange={(isShown) => setDialogStatus({ isSize: isShown })}
         onSelect={(size) => selectProvince(size)}
       />
@@ -184,7 +188,7 @@ const Home: NextPage = () => {
                 return (
                   <Chip
                     key={`province-${index}`}
-                    active={filter.province === province}
+                    active={filter.area_provinsi === province}
                     button
                     className="capitalize mr-xs"
                     onClick={() => selectProvince(province)}
@@ -196,7 +200,7 @@ const Home: NextPage = () => {
             </div>
           )}
 
-          {filter.province && cities.length > 0 && (
+          {filter.area_provinsi && cities.length > 0 && (
             <div>
               <div className="flex items-center justify-between mb-sm">
                 <p className="text-sm leading-5">Kota</p>
@@ -210,7 +214,7 @@ const Home: NextPage = () => {
                 return (
                   <Chip
                     key={`city-${index}`}
-                    active={filter.city === city}
+                    active={filter.area_kota === city}
                     button
                     className="capitalize mr-xs"
                     onClick={() => selectCity(city)}
@@ -276,7 +280,10 @@ const Home: NextPage = () => {
                   className={homeStyles["Pagination-button"]}
                   disabled={!commodity.meta.prevPage}
                   onClick={() =>
-                    paginateCommodity(commodity.meta.prevPage as number)
+                    paginateCommodities(
+                      filter,
+                      commodity.meta.prevPage as number,
+                    )
                   }
                 >
                   <FontAwesomeIcon
@@ -293,7 +300,10 @@ const Home: NextPage = () => {
                   className={homeStyles["Pagination-button"]}
                   disabled={!commodity.meta.nextPage}
                   onClick={() =>
-                    paginateCommodity(commodity.meta.nextPage as number)
+                    paginateCommodities(
+                      filter,
+                      commodity.meta.nextPage as number,
+                    )
                   }
                 >
                   <FontAwesomeIcon
