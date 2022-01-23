@@ -87,7 +87,7 @@ const Detail: NextPage = () => {
           <Box className="mb-md">
             <div className="border-b mb-bs pb-bs">
               <h1 className="font-bold text-base leading-5 text-gray-900">
-                {commodity.komoditas}
+                {commodity.komoditas || "-"}
               </h1>
             </div>
 
@@ -108,16 +108,22 @@ const Detail: NextPage = () => {
 
           <Box className="flex justify-between mb-md text-sm">
             <strong>Dibuat di tanggal</strong>
+
             <span>
-              {transformToDateLongFormat(new Date(commodity.tgl_parsed))}
+              {transformToDateLongFormat(new Date(commodity.tgl_parsed)) || "-"}
             </span>
           </Box>
 
           <Box className="flex justify-between mb-md text-sm">
             <strong>Lokasi</strong>
-            <span className="capitalize">
-              {`${commodity.area_kota.toLowerCase()}, ${commodity.area_provinsi.toLowerCase()}`}
-            </span>
+
+            {!commodity.area_kota || !commodity.area_provinsi ? (
+              <span>-</span>
+            ) : (
+              <span className="capitalize">
+                {`${commodity.area_kota.toLowerCase()}, ${commodity.area_provinsi.toLowerCase()}`}
+              </span>
+            )}
           </Box>
 
           <div className="flex mx-xs mobile:mx-0">
