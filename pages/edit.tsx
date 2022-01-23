@@ -31,7 +31,7 @@ const Edit: NextPage = () => {
   const [commodity, setCommodity] = useState<Partial<Commodity>>({});
 
   useEffect(() => {
-    async function fetchAllData() {
+    async function fetchAllData(): Promise<void> {
       setLoading({ isFetch: true });
 
       try {

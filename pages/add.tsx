@@ -36,7 +36,7 @@ const Add: NextPage = () => {
   });
 
   useEffect(() => {
-    async function fetchAllData() {
+    async function fetchAllData(): Promise<void> {
       setLoading({ isFetch: true });
 
       try {
